@@ -1,0 +1,205 @@
+basePath: /
+definitions:
+  entities.Song:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    type: object
+  errors.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  http.Response:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  title: Song Library  API
+  version: "1.0"
+paths:
+  /cars/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete song
+      parameters:
+      - description: song id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+      summary: delete
+      tags:
+      - song
+  /songs:
+    get:
+      consumes:
+      - application/json
+      description: song representation
+      parameters:
+      - description: name search by group
+        in: query
+        name: group
+        type: string
+      - description: song name search by name
+        in: query
+        name: name
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: numbers of songs per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Song'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+      summary: list
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: add song
+      parameters:
+      - description: song name and group name
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Song'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+      summary: add
+      tags:
+      - song
+  /songs/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update song data by ID
+      parameters:
+      - description: song id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: song struct
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+      summary: update
+      tags:
+      - song
+  /songs/{id}/lyrics:
+    get:
+      consumes:
+      - application/json
+      description: song lyrics representation
+      parameters:
+      - description: song id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: verse of the song
+        in: query
+        name: verse
+        type: integer
+      - description: count of verses
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Song'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.ErrorResponse'
+      summary: song
+      tags:
+      - lyrics
+swagger: "2.0"
